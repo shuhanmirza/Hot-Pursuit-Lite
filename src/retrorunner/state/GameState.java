@@ -56,12 +56,12 @@ public class GameState extends State
         player.tick();
         publicCar.tick();
 
-        if (game.getKeyManager().up == true && speed <= 200) {
-            speed += 1;
-        }
-        if (game.getKeyManager().down == true && speed >= 0) {
-            speed -= 1;
-        }
+//        if (game.getKeyManager().up == true && speed <= 200) {
+//            speed += 1;
+//        }
+//        if (game.getKeyManager().down == true && speed >= 0) {
+//            speed -= 1;
+//        }
 
         r += 10;
         if (r >= -10) {

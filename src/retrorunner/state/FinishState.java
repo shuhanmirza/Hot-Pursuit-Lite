@@ -10,6 +10,7 @@ public class FinishState extends State
 {
 
     String points;
+    GameState gameState;
 
     public FinishState(Game game, String points)
     {
@@ -19,7 +20,10 @@ public class FinishState extends State
 
     public void tick()
     {
-
+        if (game.getKeyManager().enter == true) {
+            gameState = new GameState(481, 546, game);
+            State.setState(gameState);
+        }
     }
 
     public void render(Graphics g)
@@ -33,6 +37,10 @@ public class FinishState extends State
         g.setColor(Color.red);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
         g.drawString(points, 280, 300);
+        
+        g.setColor(Color.orange);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString("press enter to try again", 100, 400);
 
     }
 

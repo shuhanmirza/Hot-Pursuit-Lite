@@ -38,7 +38,7 @@ public class PublicCar
             posY += 13;
         }
 
-        if (posY > 750) {
+        if (posY > 600) {
             rand = new Random();
             n = rand.nextInt(10);
 
