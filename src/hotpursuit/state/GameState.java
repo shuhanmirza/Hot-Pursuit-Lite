@@ -1,25 +1,20 @@
 package hotpursuit.state;
 
 import hotpursuit.Game;
-import hotpursuit.entity.*;
-import hotpursuit.gfx.*;
+import hotpursuit.constants.Positions;
+import hotpursuit.constants.Strings;
+import hotpursuit.entity.Player;
+import hotpursuit.entity.PublicCar;
+import hotpursuit.gfx.Assets;
 
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.Random;
 
 
-public class GameState extends State
-{
+public class GameState extends State {
 
     public int width, height;
-    int x;
-    int r;
-
-    private State finishState;
+    int roadPosY;
 
     int random;
     Random rand;
@@ -27,19 +22,16 @@ public class GameState extends State
     float playerPosX;
     float playerPosY;
 
-    int speed;
-
     Player player;
     PublicCar publicCar;
 
-    public GameState(int width, int height, Game game)
-    {
+    public GameState(int width, int height, Game game) {
         super(game);
         this.width = width;
         this.height = height;
 
-        playerPosY = 400;
-        playerPosX = 150;
+        playerPosY = Positions.PLAYER_STARTING_POS_Y;
+        playerPosX = Positions.PLAYER_STARTING_POS_X;
 
         player = new Player(playerPosX, playerPosY, game);
         rand = new Random();
@@ -47,39 +39,28 @@ public class GameState extends State
 
         publicCar = new PublicCar(random);
 
-        r = -450;
-        speed = 0;
-
+        roadPosY = Positions.ROAD_STARTING_POS_Y;
     }
 
     @Override
-    public void tick()
-    {
+    public void tick() {
         player.tick();
         publicCar.tick();
 
-//        if (game.getKeyManager().up == true && speed <= 200) {
-//            speed += 1;
-//        }
-//        if (game.getKeyManager().down == true && speed >= 0) {
-//            speed -= 1;
-//        }
-
-        r += 10;
-        if (r >= -10) {
-            r = -450;
+        roadPosY += Positions.ROAD_POS_INCREMENT_Y;
+        if (roadPosY >= Positions.ROAD_POS_MAX_Y) {
+            roadPosY = Positions.ROAD_STARTING_POS_Y;
         }
     }
 
     @Override
-    public void render(Graphics g)
-    {
-        g.drawImage(Assets.Road, 0, r, null);
+    public void render(Graphics g) {
+        g.drawImage(Assets.Road, Positions.ROAD_STARTING_POS_X, roadPosY, null);
         player.render(g);
         publicCar.render(g);
 
         g.setColor(Color.white);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 23));
+        g.setFont(new Font(Strings.GAME_FONT_NAME, Font.PLAIN, 23));
         g.drawString("POINTS", 10, 40);
 
         g.setColor(Color.red);
@@ -89,14 +70,13 @@ public class GameState extends State
         checkCollision(player.getX(), player.getY(), publicCar.getX(), publicCar.getY());
     }
 
-    public void checkCollision(int x1, int y1, int x2, int y2)
-    {
+    public void checkCollision(int x1, int y1, int x2, int y2) {
         Rectangle r1 = new Rectangle(x1, y1, 64, 125);
         Rectangle r2 = new Rectangle(x2, y2, 75, 125);
 
         if (r1.intersects(r2)) {
             String points = Integer.toString(publicCar.getCount());
-            finishState = new FinishState(game, points);
+            State finishState = new FinishState(game, points);
             State.setState(finishState);
         }
     }

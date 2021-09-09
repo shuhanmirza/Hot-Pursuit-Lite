@@ -1,35 +1,32 @@
 package hotpursuit;
 
-import hotpursuit.state.*;
-import hotpursuit.gfx.*;
+import hotpursuit.constants.Numbers;
+import hotpursuit.constants.Strings;
+import hotpursuit.gfx.Assets;
+import hotpursuit.state.MenuState;
+import hotpursuit.state.State;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Game implements Runnable{
+public class Game implements Runnable {
 
     private Display display;
-    Thread thread;
+    private Thread thread;
+    private final int width;
+    private final int height;
 
-    public int width, height;
-    int x;
-    int r;
-    public String title;
+    private int x;
+    private int r;
+    private final String title;
 
-    private BufferStrategy bs;
-    private Graphics g;
-
-    private State gameState;
-    private State menuState;
-
-    //input
-    KeyManager keyManager;
+    private final KeyManager keyManager;
 
     boolean running = false;
 
-    public Game(String title, int width, int height)
-    {
+    public Game(String title, int width, int height) {
         this.width = width;
         this.height = height;
         this.title = title;
@@ -37,54 +34,50 @@ public class Game implements Runnable{
         keyManager = new KeyManager();
     }
 
-    private void init()
-    {
+    private void init() {
         display = new Display(title, width, height);
         display.getFrame().addKeyListener(keyManager);
         Assets.init();
 
-        menuState = new MenuState(this);
+        State menuState = new MenuState(this);
         State.setState(menuState);
     }
 
-    private void tick()
-    {
+    private void tick() {
         keyManager.tick();
         if (State.getState() != null) {
             State.getState().tick();
         }
     }
 
-    private void render()
-    {
-        bs = display.getCanvas().getBufferStrategy();
-        if (bs == null) {
+    private void render() {
+        BufferStrategy bufferStrategy = display.getCanvas().getBufferStrategy();
+        if (bufferStrategy == null) {
             display.getCanvas().createBufferStrategy(3);
             return;
         }
 
-        g = bs.getDrawGraphics();
+        Graphics graphics = bufferStrategy.getDrawGraphics();
 
         //clearing screen
-        g.clearRect(0, 0, width, height);
+        graphics.clearRect(0, 0, width, height);
 
         //drawing start
         if (State.getState() != null) {
-            State.getState().render(g);
+            State.getState().render(graphics);
         }
 
         //drawing end
-        bs.show();
-        g.dispose();
+        bufferStrategy.show();
+        graphics.dispose();
 
     }
 
-    public void run()
-    {
+    public void run() {
         init();
 
-        int fps = 60;
-        double timePerTick = 1000000000 / fps;
+        int fps = Numbers.GAME_FPS;
+        double timePerTick = 1000000000.00 / fps;
         double delta = 0;
         long now;
         long lastTime = System.nanoTime();
@@ -103,25 +96,22 @@ public class Game implements Runnable{
         stop();
     }
 
-    public KeyManager getKeyManager()
-    {
+    public KeyManager getKeyManager() {
         return keyManager;
     }
 
-    public synchronized void start()
-    {
+    public synchronized void start() {
         if (running) {
             return;
         }
 
         running = true;
-        thread = new Thread(this, "runner");
+        thread = new Thread(this, Strings.GAME_THREAD_NAME);
         thread.start();
     }
 
-    public synchronized void stop()
-    {
-        if (running == false) {
+    public synchronized void stop() {
+        if (!running) {
             return;
         }
 

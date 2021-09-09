@@ -11,8 +11,7 @@ public class Display {
     private String title;
     private int width, height;
 
-    public Display(String title, int width, int height)
-    {
+    public Display(String title, int width, int height) {
         this.title = title;
         this.width = width;
         this.height = height;
@@ -20,8 +19,7 @@ public class Display {
         CreateDisplay();
     }
 
-    private void CreateDisplay()
-    {
+    private void CreateDisplay() {
         frame = new JFrame(title);
 
         frame.setSize(width, height);
@@ -40,13 +38,11 @@ public class Display {
         frame.pack();
     }
 
-    public Canvas getCanvas()
-    {
+    public Canvas getCanvas() {
         return canvas;
     }
 
-    public JFrame getFrame()
-    {
+    public JFrame getFrame() {
         return frame;
     }
 }

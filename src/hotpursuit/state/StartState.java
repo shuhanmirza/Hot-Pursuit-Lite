@@ -2,7 +2,6 @@
 package hotpursuit.state;
 
 
-public class StartState
-{
-    
+public class StartState {
+
 }

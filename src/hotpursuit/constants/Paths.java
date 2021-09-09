@@ -1,4 +1,4 @@
 package hotpursuit.constants;
 
-public class Path {
+public class Paths {
 }
