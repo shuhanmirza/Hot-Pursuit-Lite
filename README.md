@@ -13,6 +13,8 @@ Mr. 101
 ## GamePlay
 This is a simple 2D infinite runner game. The player gets a score by avoiding other cars on the road. The player can drive the car to the Left or Right using the Left/Right arrow keys. The main objective is to overtake as many cars as you can.
 
+![](gameplay.gif)
+
 ## Code
 The project utilizes Java AWT (Abstract Window Toolkit) API for generating GUI(Graphical User Interface).
 
