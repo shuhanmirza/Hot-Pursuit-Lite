@@ -1,5 +1,6 @@
 package hotpursuit.gfx;
 
+import hotpursuit.constants.Dimensions;
 import hotpursuit.constants.Numbers;
 
 import java.awt.image.BufferedImage;
@@ -30,18 +31,17 @@ public class Assets {
 
         imgPublicCar = new BufferedImage[Numbers.GAME_TOTAL_PUBLIC_CAR_NUMBERS]; //10
 
-        imgPublicCar[0] = sheet1.Crop(0, 0, 75, 125);
-        imgPublicCar[1] = sheet1.Crop(80, 0, 75, 125);
-        imgPublicCar[2] = sheet1.Crop(155, 0, 75, 125);
-        imgPublicCar[3] = sheet1.Crop(230, 0, 75, 125);
-        imgPublicCar[4] = sheet1.Crop(308, 0, 75, 125);
+        imgPublicCar[0] = sheet1.Crop(0, 0, Dimensions.PUBLIC_CAR_WIDTH, Dimensions.PUBLIC_CAR_HEIGHT);
+        imgPublicCar[1] = sheet1.Crop(80, 0, Dimensions.PUBLIC_CAR_WIDTH, Dimensions.PUBLIC_CAR_HEIGHT);
+        imgPublicCar[2] = sheet1.Crop(155, 0, Dimensions.PUBLIC_CAR_WIDTH, Dimensions.PUBLIC_CAR_HEIGHT);
+        imgPublicCar[3] = sheet1.Crop(230, 0, Dimensions.PUBLIC_CAR_WIDTH, Dimensions.PUBLIC_CAR_HEIGHT);
+        imgPublicCar[4] = sheet1.Crop(308, 0, Dimensions.PUBLIC_CAR_WIDTH, Dimensions.PUBLIC_CAR_HEIGHT);
 
-        imgPublicCar[5] = sheet2.Crop(0, 0, 75, 125);
-        imgPublicCar[6] = sheet2.Crop(80, 0, 75, 125);
-        imgPublicCar[7] = sheet2.Crop(155, 0, 75, 125);
-        imgPublicCar[8] = sheet2.Crop(230, 0, 75, 125);
-        imgPublicCar[9] = sheet2.Crop(308, 0, 75, 125);
-
+        imgPublicCar[5] = sheet2.Crop(0, 0, Dimensions.PUBLIC_CAR_WIDTH, Dimensions.PUBLIC_CAR_HEIGHT);
+        imgPublicCar[6] = sheet2.Crop(80, 0, Dimensions.PUBLIC_CAR_WIDTH, Dimensions.PUBLIC_CAR_HEIGHT);
+        imgPublicCar[7] = sheet2.Crop(155, 0, Dimensions.PUBLIC_CAR_WIDTH, Dimensions.PUBLIC_CAR_HEIGHT);
+        imgPublicCar[8] = sheet2.Crop(230, 0, Dimensions.PUBLIC_CAR_WIDTH, Dimensions.PUBLIC_CAR_HEIGHT);
+        imgPublicCar[9] = sheet2.Crop(308, 0, Dimensions.PUBLIC_CAR_WIDTH, Dimensions.PUBLIC_CAR_HEIGHT);
 
     }
 }
