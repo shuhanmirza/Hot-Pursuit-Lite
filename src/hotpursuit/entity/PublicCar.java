@@ -9,14 +9,13 @@ import java.util.Objects;
 
 import static hotpursuit.utils.Functions.getRandomInt;
 
-public class PublicCar {
+public class PublicCar extends Entity{
 
     int carId;
-    int posX;
-    int posY;
     PublicCarGenerationListener publicCarGenerationListener;
 
     public PublicCar(PublicCarGenerationListener publicCarGenerationListener) {
+        super(0,0); //dummy value, this will update in generateCar()
         this.publicCarGenerationListener = publicCarGenerationListener;
         generateCar(null, Positions.PUBLIC_CAR_INIT_POS_Y, getRandomInt(5));
     }
