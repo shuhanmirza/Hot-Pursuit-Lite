@@ -3,14 +3,14 @@ package hotpursuit.entity;
 import java.awt.*;
 
 public abstract class Entity {
-    protected float x,y;
+    protected int posX, posY;
 
-    public Entity(float x, float y)
-    {
-        this.x = x;
-        this.y = y;
+    public Entity(int posX, int posY) {
+        this.posX = posX;
+        this.posY = posY;
     }
 
     public abstract void tick();
-    public abstract void render(Graphics g);
+
+    public abstract void render(Graphics graphics);
 }

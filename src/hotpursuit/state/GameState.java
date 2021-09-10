@@ -1,29 +1,31 @@
 package hotpursuit.state;
 
 import hotpursuit.Game;
+import hotpursuit.constants.Dimensions;
 import hotpursuit.constants.Positions;
 import hotpursuit.constants.Strings;
 import hotpursuit.entity.Player;
 import hotpursuit.entity.PublicCar;
+import hotpursuit.entity.PublicCarGenerationListener;
 import hotpursuit.gfx.Assets;
 
 import java.awt.*;
-import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
-public class GameState extends State {
+public class GameState extends State implements PublicCarGenerationListener {
 
     public int width, height;
     int roadPosY;
 
-    int random;
-    Random rand;
-
-    float playerPosX;
-    float playerPosY;
+    int playerPosX;
+    int playerPosY;
 
     Player player;
     PublicCar publicCar;
+
+    int totalScore;
 
     public GameState(int width, int height, Game game) {
         super(game);
@@ -34,10 +36,7 @@ public class GameState extends State {
         playerPosX = Positions.PLAYER_STARTING_POS_X;
 
         player = new Player(playerPosX, playerPosY, game);
-        rand = new Random();
-        random = rand.nextInt(10);
-
-        publicCar = new PublicCar(random);
+        publicCar = new PublicCar(this);
 
         roadPosY = Positions.ROAD_STARTING_POS_Y;
     }
@@ -54,31 +53,35 @@ public class GameState extends State {
     }
 
     @Override
-    public void render(Graphics g) {
-        g.drawImage(Assets.Road, Positions.ROAD_STARTING_POS_X, roadPosY, null);
-        player.render(g);
-        publicCar.render(g);
+    public void render(Graphics graphics) {
+        graphics.drawImage(Assets.imgRoad, Positions.ROAD_STARTING_POS_X, roadPosY, null);
+        player.render(graphics);
+        publicCar.render(graphics);
 
-        g.setColor(Color.white);
-        g.setFont(new Font(Strings.GAME_FONT_NAME, Font.PLAIN, 23));
-        g.drawString("POINTS", 10, 40);
+        graphics.setColor(Color.white);
+        graphics.setFont(new Font(Strings.GAME_FONT_NAME, Font.PLAIN, Dimensions.GAME_SCORE_TEXT_SIZE));
+        graphics.drawString(Strings.GAME_SCORE_TEXT, Positions.GAME_SCORE_TEXT_POS_X, Positions.GAME_SCORE_TEXT_POS_Y);
 
-        g.setColor(Color.red);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-        g.drawString(Integer.toString(publicCar.getCount()), 35, 60);
+        graphics.setColor(Color.red);
+        graphics.setFont(new Font(Strings.GAME_FONT_NAME, Font.PLAIN, Dimensions.GAME_SCORE_SIZE));
+        graphics.drawString(String.valueOf(totalScore), Positions.GAME_SCORE_POS_X, Positions.GAME_SCORE_POS_Y);
 
-        checkCollision(player.getX(), player.getY(), publicCar.getX(), publicCar.getY());
+        checkCollision(player.getPosX(), player.getPosY(), publicCar.getX(), publicCar.getY());
     }
 
-    public void checkCollision(int x1, int y1, int x2, int y2) {
-        Rectangle r1 = new Rectangle(x1, y1, 64, 125);
-        Rectangle r2 = new Rectangle(x2, y2, 75, 125);
+    private void checkCollision(int playerPosX, int playerPosY, int publicPosX, int publicPosY) {
+        Rectangle playerCarRectangle = new Rectangle(playerPosX, playerPosY, Dimensions.PLAYER_CAR_WIDTH, Dimensions.PLAYER_CAR_HEIGHT);
+        Rectangle publicCarRectangle = new Rectangle(publicPosX, publicPosY, Dimensions.PUBLIC_CAR_WIDTH, Dimensions.PUBLIC_CAR_HEIGHT);
 
-        if (r1.intersects(r2)) {
-            String points = Integer.toString(publicCar.getCount());
-            State finishState = new FinishState(game, points);
+        if (playerCarRectangle.intersects(publicCarRectangle)) {
+            State finishState = new FinishState(game, Integer.toString(totalScore));
             State.setState(finishState);
         }
     }
 
+    @Override
+    public void newCarGenerated(int carId) {
+        totalScore++;
+        Logger.getLogger(Game.class.getName()).log(Level.INFO, "total score -> " + totalScore);
+    }
 }

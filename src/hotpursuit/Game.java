@@ -17,9 +17,6 @@ public class Game implements Runnable {
     private Thread thread;
     private final int width;
     private final int height;
-
-    private int x;
-    private int r;
     private final String title;
 
     private final KeyManager keyManager;

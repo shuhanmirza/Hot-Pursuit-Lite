@@ -8,8 +8,9 @@ public class Display {
     private JFrame frame;
     private Canvas canvas;
 
-    private String title;
-    private int width, height;
+    private final String title;
+    private final int width;
+    private final int height;
 
     public Display(String title, int width, int height) {
         this.title = title;

@@ -1,72 +1,56 @@
 package hotpursuit.entity;
 
+import hotpursuit.constants.Numbers;
+import hotpursuit.constants.Positions;
+import hotpursuit.gfx.Assets;
+
 import java.awt.*;
-import java.util.Random;
-import hotpursuit.gfx.*;
+import java.util.Objects;
+
+import static hotpursuit.utils.Functions.getRandomInt;
 
 public class PublicCar {
-    int n;
+
+    int carId;
     int posX;
     int posY;
+    PublicCarGenerationListener publicCarGenerationListener;
 
-    Random rand;
-    int count;
-
-    public PublicCar(int n)
-    {
-        this.n = n;
-
-        if (n < 5) {
-            posX = 150;
-            posY = -500;
-        } else {
-            posX = 250;
-            posY = -500;
-        }
-        count = 0;
+    public PublicCar(PublicCarGenerationListener publicCarGenerationListener) {
+        this.publicCarGenerationListener = publicCarGenerationListener;
+        generateCar(null, Positions.PUBLIC_CAR_INIT_POS_Y, getRandomInt(5));
     }
 
-    public void tick()
-    {
-        if (n < 5) {
-            posY += 3;
-        } else {
-            posY += 13;
-        }
+    private void generateCar(Integer X, Integer Y, Integer CAR_ID) {
+        carId = Objects.requireNonNullElseGet(CAR_ID, ()-> getRandomInt(Numbers.GAME_TOTAL_PUBLIC_CAR_NUMBERS));
+        posX = Objects.requireNonNullElseGet(X, () -> isCarDirectionUp(carId) ? Positions.PUBLIC_CAR_UP_STARTING_POS_X : Positions.PUBLIC_CAR_DOWN_STARTING_POS_X);
+        posY = Objects.requireNonNullElseGet(Y, () -> Positions.PUBLIC_CAR_STARTING_POS_Y);
 
-        if (posY > 600) {
-            rand = new Random();
-            n = rand.nextInt(10);
+        publicCarGenerationListener.newCarGenerated(carId);
+    }
 
-            if (n < 5) {
-                posX = 150;
-                posY = -150;
-            } else {
-                posX = 250;
-                posY = -150;
-            }
-            count++;
+    public void tick() {
+        posY += isCarDirectionUp(carId) ? Positions.PUBLIC_CAR_UP_INCREMENT_Y : Positions.PUBLIC_CAR_DOWN_INCREMENT_Y;
+
+        if (posY > Positions.PUBLIC_CAR_POS_MAX_Y) {
+            generateCar(null, null, null);
         }
 
     }
 
-    public void render(Graphics g)
-    {
-        g.drawImage(Assets.imgPublicCar[n], posX, posY, null);
+    private boolean isCarDirectionUp(int carId) {
+        return carId < Numbers.GAME_TOTAL_PUBLIC_CAR_NUMBERS / 2;
     }
 
-    public int getX()
-    {
+    public void render(Graphics graphics) {
+        graphics.drawImage(Assets.imgPublicCar[carId], posX, posY, null);
+    }
+
+    public int getX() {
         return posX;
     }
 
-    public int getY()
-    {
+    public int getY() {
         return posY;
     }
-    public int getCount()
-    {
-        return count;
-    }
-
 }

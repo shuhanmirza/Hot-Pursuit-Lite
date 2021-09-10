@@ -1,17 +1,34 @@
 package hotpursuit.gfx;
+
+import hotpursuit.constants.Numbers;
+
 import java.awt.image.BufferedImage;
 
-public class Assets
-{
+public class Assets {
 
-    public static BufferedImage imgPlayerCar, imgPublicCar[], Road , finish , menu;
+    public static BufferedImage imgPlayerCar;
+    public static BufferedImage[] imgPublicCar;
+    public static BufferedImage imgRoad;
+    public static BufferedImage imgFinish;
+    public static BufferedImage imgMenu;
 
-    public static void init()
-    {
-        SpriteSheet sheet1 = new SpriteSheet(ImageLoader.LoadImage("resources/PublicCar.png"));
-        SpriteSheet sheet2 = new SpriteSheet(ImageLoader.LoadImage("resources/PublicCar2.png"));
+    private static final String pathImgPublicCarUp = "resources/public_car_up.png";
+    private static final String pathImgPublicCarDown = "resources/public_car_down.png";
+    private static final String pathImgPlayerCar = "resources/player_car.png";
+    private static final String pathImgRoad = "resources/road.png";
+    private static final String pathImgMenu = "resources/menu.png";
+    private static final String pathImgFinish = "resources/finish.png";
 
-        imgPublicCar = new BufferedImage[10];
+    public static void init() {
+        imgPlayerCar = ImageLoader.LoadImage(pathImgPlayerCar);
+        imgRoad = ImageLoader.LoadImage(pathImgRoad);
+        imgFinish = ImageLoader.LoadImage(pathImgFinish);
+        imgMenu = ImageLoader.LoadImage(pathImgMenu);
+
+        SpriteSheet sheet1 = new SpriteSheet(ImageLoader.LoadImage(pathImgPublicCarUp));
+        SpriteSheet sheet2 = new SpriteSheet(ImageLoader.LoadImage(pathImgPublicCarDown));
+
+        imgPublicCar = new BufferedImage[Numbers.GAME_TOTAL_PUBLIC_CAR_NUMBERS]; //10
 
         imgPublicCar[0] = sheet1.Crop(0, 0, 75, 125);
         imgPublicCar[1] = sheet1.Crop(80, 0, 75, 125);
@@ -25,11 +42,6 @@ public class Assets
         imgPublicCar[8] = sheet2.Crop(230, 0, 75, 125);
         imgPublicCar[9] = sheet2.Crop(308, 0, 75, 125);
 
-        imgPlayerCar = ImageLoader.LoadImage("resources/playerCar3.png");
-
-        Road = ImageLoader.LoadImage("resources/road1.png");
-        finish = ImageLoader.LoadImage("resources/finish.png");
-        menu = ImageLoader.LoadImage("resources/menu.png");
 
     }
 }

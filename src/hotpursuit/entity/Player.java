@@ -1,46 +1,37 @@
 package hotpursuit.entity;
 
 import hotpursuit.Game;
-import hotpursuit.gfx.*;
+import hotpursuit.constants.Positions;
+import hotpursuit.gfx.Assets;
+
 import java.awt.*;
 
-public class Player extends Entity{
-    private Game game;
+public class Player extends Entity {
+    private final Game game;
 
-    float x, y;
-
-    public Player(float x, float y, Game game)
-    {
-        super(x, y);
-        this.x = x;
-        this.y = y;
+    public Player(int posX, int posY, Game game) {
+        super(posX, posY);
         this.game = game;
     }
 
-    public void tick()
-    {
-        if (game.getKeyManager().left == true && x >= 123) {
-            x -= 3;
-        }
-        if (game.getKeyManager().right == true && x <= 297) {
-            x += 3;
+    public void tick() {
+        if (game.getKeyManager().left && posX >= Positions.PLAYER_CAR_POS_MIN_X) {
+            posX -= Positions.PLAYER_CAR_POS_CHANGE_X;
+        } else if (game.getKeyManager().right && posX <= Positions.PLAYER_CAR_POS_MAX_X) {
+            posX += Positions.PLAYER_CAR_POS_CHANGE_X;
         }
     }
 
-    public void render(Graphics g)
-    {
-        g.drawImage(Assets.imgPlayerCar, (int) x, (int) y, null);
-        //System.out.println(x);
+    public void render(Graphics graphics) {
+        graphics.drawImage(Assets.imgPlayerCar, posX, posY, null);
     }
 
-    public int getX()
-    {
-        return (int)x;
+    public int getPosX() {
+        return posX;
     }
 
-    public int getY()
-    {
-        return (int)y;
+    public int getPosY() {
+        return posY;
     }
 
 }
